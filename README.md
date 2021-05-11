@@ -1,6 +1,12 @@
 *NOTE:* This file is a template that you can use to create the README for your project. The *TODO* comments below will highlight the information you should be sure to include.
 
-# Your Project Title Here
+# Final Project
+In this final project, all the possibilities and knowledge acquired in the Nanodegree are still being used. In order to evaluate the heart failure prediction data in AutoML as well as HyperDrive and to determine the best model as well as to compare the different technologies.
+Here you can see a representation of what is being implemented in this project with the help of MS Azure and its technological possibilities.
+
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117867884-35f63380-b299-11eb-87c9-b03fc5d561ef.png)</kbd>
+
+
 
 *TODO:* Write a short introduction to your project.
 
