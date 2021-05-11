@@ -48,11 +48,21 @@ The AutomatedML run was created using an instance of AutoML Config. The AutoML C
 | featurization | 'auto'   | Featurization is set to auto so that the featurization step is done automatically |
 | n_cross_validations | 4  | This is specified so that there are 4 different trainings and each training uses 1/4 of data for validation |
 | verbosity | logging.INFO   | This specifies the verbosity level for writing to the log file |
+| enable_onnx_compatible_models | True   | Export to ONNX format from Azure ML is enabled for later export, more about ONNX can be found [HERE](https://onnx.ai/about.html) |
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+
+#### Save the best model in ONNX
+```python
+from azureml.automl.runtime.onnx_convert import OnnxConverter
+automl_best_run_onnx, automl_fitted_model_onnx = remote_run.get_output(return_onnx_model=True)
+OnnxConverter.save_onnx_model(automl_fitted_model_onnx, './outputs/AutoML.onnx' )
+```
+So that the calculations can be understood by other systems. The best result is stored in the onnx format. 
+With the ONNX, AI developers can exchange models between different tools and choose the best combination of these tools for them.
 
 ## Hyperparameter Tuning
 *TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
