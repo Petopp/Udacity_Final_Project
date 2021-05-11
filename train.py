@@ -18,13 +18,10 @@ def main():
 
     args = parser.parse_args()
 
-    # Create TabularDataset using TabularDatasetFactory
-    # Data is located at:
-    # "https://raw.githubusercontent.com/neha7598/azure-ml-capstone/main/data/heart_failure_clinical_records_dataset.csv"
+             
+    # Path to dataset 
+    path_to_data="https://raw.githubusercontent.com/Petopp/Udacity_Final_Project/main/heart_failure_clinical_records_dataset.csv"
 
-    path_to_data="https://github.com/Petopp/Udacity_Final_Project/blob/d3c978d0daf8c18b976bb6a1cd25bb36b56279fe/heart_failure_clinical_records_dataset.csv"
-    
-    
     ds = TabularDatasetFactory.from_delimited_files(path=path_to_data)
 
     data = ds.to_pandas_dataframe()
