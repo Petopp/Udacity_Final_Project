@@ -35,6 +35,20 @@ This is an experiment that was developed in the course of a test for the Udacity
 ## Automated ML
 The AutomatedML run was created using an instance of AutoML Config. The AutoML Config class is a way to use the AutoML SDK to automate machine learning. The following parameters were used for the AutoML run.
 
+| Parameter        | Value          | Description  |
+| :----- |:-----:| :---------------|
+| task     | 'classification' | Classification is selected since we are performing binary classification, i.e whether or not a death event occurs |
+| debug.log      | 'automl_errors.log"  | The debug information is written to this file instead of the automl.log file |
+| training_data | train_data    | train_data is passed that which contains the data to be used for training |
+| label_column_name | 'DEATH_EVENT' | Since the DEATH_EVENT column contains what we need to predict, it is passed |
+| compute_target | compute_cluster    | The compute target on which we want this AutoML experiment to run is specified |
+| experiment_timeout_minutes | 30  | Specifies the time that all iterations combined can take. Due to the lack of resources this is selected as 30 |
+| primary_metric | 'accuracy'    | This is the metric that AutoML will optimize for model_selection. Accuracy is selected as it is well suited to problems involving binary classification. |
+| enable_earli_stopping | True | Early Stopping is enabled to terminate a run in case the score is not improving in short term. This allows AutoML to explore more better models in less time |
+| featurization | 'auto'   | Featurization is set to auto so that the featurization step is done automatically |
+| n_cross_validations | 4  | This is specified so that there are 4 different trainings and each training uses 1/4 of data for validation |
+| verbosity | logging.INFO   | This specifies the verbosity level for writing to the log file |
+
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
