@@ -22,7 +22,9 @@ def main():
     # Data is located at:
     # "https://raw.githubusercontent.com/neha7598/azure-ml-capstone/main/data/heart_failure_clinical_records_dataset.csv"
 
-    path_to_data="https://raw.githubusercontent.com/neha7598/azure-ml-capstone/main/data/heart_failure_clinical_records_dataset.csv"
+    path_to_data="https://github.com/Petopp/Udacity_Final_Project/blob/d3c978d0daf8c18b976bb6a1cd25bb36b56279fe/heart_failure_clinical_records_dataset.csv"
+    
+    
     ds = TabularDatasetFactory.from_delimited_files(path=path_to_data)
 
     data = ds.to_pandas_dataframe()
@@ -31,7 +33,7 @@ def main():
 
     # Split data into train and test sets.
 
-    x_train, x_test, y_train, y_test= train_test_split(x, y, test_size=0.20)
+    x_train, x_test, y_train, y_test= train_test_split(x, y, test_size=0.25)
 
     run = Run.get_context(allow_offline=True)
 
