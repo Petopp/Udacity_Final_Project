@@ -80,14 +80,6 @@ automl_config = AutoMLConfig(
 
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
-#### Save the best model in ONNX
-```python
-from azureml.automl.runtime.onnx_convert import OnnxConverter
-automl_best_run_onnx, automl_fitted_model_onnx = remote_run.get_output(return_onnx_model=True)
-OnnxConverter.save_onnx_model(automl_fitted_model_onnx, './outputs/AutoML.onnx' )
-```
-So that the calculations can be understood by other systems. The best result is stored in the onnx format. 
-With the ONNX, AI developers can exchange models between different tools and choose the best combination of these tools for them.
 
 ## Hyperparameter Tuning
 *TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
@@ -100,6 +92,17 @@ With the ONNX, AI developers can exchange models between different tools and cho
 
 ## Model Deployment
 *TODO*: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
+
+## Save the best model in ONNX
+
+```python
+from azureml.automl.runtime.onnx_convert import OnnxConverter
+automl_best_run_onnx, automl_fitted_model_onnx = remote_run.get_output(return_onnx_model=True)
+OnnxConverter.save_onnx_model(automl_fitted_model_onnx, './outputs/AutoML.onnx' )
+```
+So that the calculations can be understood by other systems. The best result is stored in the onnx format. 
+With the ONNX, AI developers can exchange models between different tools and choose the best combination of these tools for them.
+
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
