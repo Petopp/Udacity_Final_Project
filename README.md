@@ -50,6 +50,31 @@ The AutomatedML run was created using an instance of AutoML Config. The AutoML C
 | verbosity | logging.INFO   | This specifies the verbosity level for writing to the log file |
 | enable_onnx_compatible_models | True   | Export to ONNX format from Azure ML is enabled for later export, more about ONNX can be found [HERE](https://onnx.ai/about.html) |
 
+The paramerters in code:
+```python
+# automl settings 
+automl_settings = {
+    "enable_early_stopping" : True,
+    "experiment_timeout_minutes": 30,
+    "n_cross_validations": 4,
+    "featurization": "auto",
+    "primary_metric": "accuracy",
+    "verbosity": logging.INFO
+}
+
+# automl config (with onnx compatible modus)
+automl_config = AutoMLConfig(
+    task="classification",
+    debug_log = "automl_errors.log",
+    training_data=train_data,
+    label_column_name="DEATH_EVENT",
+    compute_target=compute_cluster,
+    enable_onnx_compatible_models=True,
+    **automl_settings
+)
+```
+
+
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
