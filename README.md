@@ -46,6 +46,32 @@ The parameter sampling method used for this project is Random Sampling. It rando
 
 The early stop policy used in this project is the Bandit policy, which is based on a slack factor (in this case 0.1) and a scoring interval (in this case 1). This policy stops runs where the primary metric is not within the specified slip factor, compared to the run with the best performance. This will save time and resources as runs that may not produce good results would be terminated early.
 
+### Paramerters
+
+in the Jupyter Notebook
+```python
+# Create the different params that will be needed during training
+param_sampling = RandomParameterSampling(
+    {
+        "--C": uniform(0.001,100),
+        "--max_iter": choice(50, 90, 125, 170)
+    }
+)
+```
+
+and in the train.py
+```python
+# Path to dataset 
+    path_to_data="https://raw.githubusercontent.com/Petopp/Udacity_Final_Project/main/heart_failure_clinical_records_dataset.csv"
+```
+
+```python
+# Split data into train and test sets.
+x_train, x_test, y_train, y_test= train_test_split(x, y, test_size=0.25)
+```
+
+
+
 ### Results
 
 Details from Jupyter Notebook
