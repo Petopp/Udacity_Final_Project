@@ -33,13 +33,39 @@ Our goal is to develop a machine learning algorithm that can detect whether a pe
 This is an experiment that was developed in the course of a test for the Udacity learning platform. Do not use this model in a medical environment or for acute indications. Always consult your doctor for medical questions or the medical emergency service in acute cases!
 
 ## Hyperparameter Tuning
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
+The model used here is a logistic regression model that is trained with a custom script train.py. 
+The dataset is fetched from [HERE](https://raw.githubusercontent.com/Petopp/Udacity_Final_Project/main/heart_failure_clinical_records_dataset.csv) as a dataset. The hyperparameters chosen for the scikit-learn model are regularisation strength (C) and maximum iterations (max_iter). The trained model is evaluated against 25% data selected from the original dataset. The remaining data is used to train the model.
 
+Hyperparameter tuning with HyperDrive requires several steps: 
+- define the parameter search space
+- define a sampling method
+- selecting a primary metric for optimisation 
+- selecting an early stop policy.
+
+The parameter sampling method used for this project is Random Sampling. It randomly selects the best hyperparameters for the model so that the entire search space does not need to be searched. The Random Sampling method saves time and is much faster than Grid Sampling and Bayesian Sampling, which are only recommended if you have a budget to explore the entire search space.
+
+The early stop policy used in this project is the Bandit policy, which is based on a slack factor (in this case 0.1) and a scoring interval (in this case 1). This policy stops runs where the primary metric is not within the specified slip factor, compared to the run with the best performance. This will save time and resources as runs that may not produce good results would be terminated early.
 
 ### Results
-*TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+Details from Jupyter Notebook
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117972722-c2e9cd00-b32b-11eb-848b-c585a6db04ab.png)</kbd>
+
+Details from Azure Experiments
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117972864-f3ca0200-b32b-11eb-98e1-863ae7c2239a.png)</kbd>
+
+Experiment completed
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117973039-2aa01800-b32c-11eb-85d1-c449ec8bcdd2.png)</kbd>
+
+The result in detail 
+```python
+['--C', '97.2861169940756', '--max_iter', '125']
+['azureml-logs/55_azureml-execution-tvmps_b3d8a370fdab6acc496b1fa398220948b9ae8dd605d8df21bbd0582f1cc744bc_d.txt', 'azureml-logs/65_job_prep-tvmps_b3d8a370fdab6acc496b1fa398220948b9ae8dd605d8df21bbd0582f1cc744bc_d.txt', 'azureml-logs/70_driver_log.txt', 'azureml-logs/75_job_post-tvmps_b3d8a370fdab6acc496b1fa398220948b9ae8dd605d8df21bbd0582f1cc744bc_d.txt', 'azureml-logs/process_info.json', 'azureml-logs/process_status.json', 'logs/azureml/106_azureml.log', 'logs/azureml/job_prep_azureml.log', 'logs/azureml/job_release_azureml.log', 'outputs/model.joblib']
+Best Run Accuracy: 0.84
+
+```
+
+
 
 ## Automated ML
 The AutomatedML run was created using an instance of AutoML Config. The AutoML Config class is a way to use the AutoML SDK to automate machine learning. The following parameters were used for the AutoML run.
@@ -104,10 +130,7 @@ With the ONNX, AI developers can exchange models between different tools and cho
 
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
-- A working model
-- Demo of the deployed  model
-- Demo of a sample request sent to the endpoint and its response
+See on [youtube](https://youtu.be/w7i0fTQ_AeU)
 
 ## Standout Suggestions
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
