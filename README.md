@@ -195,9 +195,9 @@ ACI service creation operation finished, operation "Succeeded"
 Healthy
 ```
 
-and in the Web
+and in the Web (Endpoints)
 
-<kbd>![image](https://user-images.githubusercontent.com/41972011/117976076-a2237680-b32f-11eb-9838-0541d9c26787.png)</kbd>
+<kbd>!![image](https://user-images.githubusercontent.com/41972011/117988052-5676ca00-b33b-11eb-9a91-1dc7c461ebb0.png)</kbd>
 
 After this steps, we will now test the model with this code/parameters
 
@@ -268,6 +268,7 @@ Scoring URL: http://ed926a23-aca1-4a20-980a-71f05596ce2b.southcentralus.azurecon
 
 So we can prove that this model has been successfully published. 
 Otherwise it would not be possible to address it and we would receive an error message.
+
 
 ## Save the best model in ONNX
 
