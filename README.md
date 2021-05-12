@@ -70,10 +70,7 @@ and in the train.py
 x_train, x_test, y_train, y_test= train_test_split(x, y, test_size=0.25)
 ```
 
-
-
 ### Results
-
 Details from Jupyter Notebook
 <kbd>![image](https://user-images.githubusercontent.com/41972011/117972722-c2e9cd00-b32b-11eb-848b-c585a6db04ab.png)</kbd>
 
@@ -90,7 +87,6 @@ The result in detail
 Best Run Accuracy: 0.84
 
 ```
-
 
 
 ## Automated ML
@@ -135,14 +131,143 @@ automl_config = AutoMLConfig(
 )
 ```
 
+### Runnig
+in the search of the best model
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117974670-1f4dec00-b32e-11eb-8a7c-39287772456c.png)</kbd>
+
+
+after finding the best model
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117974482-e44bb880-b32d-11eb-8457-66e826b8bae7.png)</kbd>
 
 ### Results
-*TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+The best result in the Jupyter view
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117973927-3fc97680-b32d-11eb-9086-d9cbc4f67fe9.png)</kbd>
+
+and in Azure Experiments
+
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117974117-7c956d80-b32d-11eb-8c72-5d82b8c5d2ce.png)</kbd>
+
+
 
 ## Model Deployment
-*TODO*: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
+The best model was the "MaxAbsScaler, GradinetBootsing" model from the AutoML experiment.
+This model will we now deploying and testing in the next steps.
+
+First step it's the deploying with this parameters
+
+```python
+# Create inference config
+script_file_name= "inference/score.py"
+inference_config = InferenceConfig(entry_script=script_file_name)
+
+aciconfig = AciWebservice.deploy_configuration(cpu_cores = 2, 
+                                               memory_gb = 4, 
+                                               tags = {"area": "hfData", "type": "automl_classification"}, 
+                                               description = "Heart Failure Prediction (Experiment!)")
+
+aci_service_name = "automl-heart-failure-model"
+print(aci_service_name)
+aci_service = Model.deploy(ws, aci_service_name, [model], inference_config, aciconfig)
+aci_service.wait_for_deployment(True)
+print(aci_service.state)
+```
+
+```python
+# Enable Application Insights
+aci_service.update(enable_app_insights=True)
+```
+
+Final we have the confirmation in Jupyter
+
+```python
+automl-heart-failure-model
+Tips: You can try get_logs(): https://aka.ms/debugimage#dockerlog or local deployment: https://aka.ms/debugimage#debug-locally to debug if deployment takes longer than 10 minutes.
+Running
+2021-05-12 08:44:14+00:00 Creating Container Registry if not exists..
+2021-05-12 08:44:25+00:00 Use the existing image.
+2021-05-12 08:44:25+00:00 Generating deployment configuration.
+2021-05-12 08:44:25+00:00 Submitting deployment to compute.
+2021-05-12 08:44:29+00:00 Checking the status of deployment automl-heart-failure-model..
+2021-05-12 08:48:15+00:00 Checking the status of inference endpoint automl-heart-failure-model.
+Succeeded
+ACI service creation operation finished, operation "Succeeded"
+Healthy
+```
+
+and in the Web
+
+<kbd>![image](https://user-images.githubusercontent.com/41972011/117976076-a2237680-b32f-11eb-9838-0541d9c26787.png)</kbd>
+
+After this steps, we will now test the model with this code/parameters
+
+```python
+import requests
+import json
+
+# Short waiting time, it's stabler in process with this
+time.sleep(30)
+
+# URL for the web service, should be similar to:
+print ("Scoring URL: "+aci_service.scoring_uri)
+scoring_uri = aci_service.scoring_uri
+
+
+# Two data sets are evaluated, we then receive two results back for this
+data = {"data":
+        [
+          {
+            "age": 70.0,
+            "anaemia": 1,
+            "creatinine_phosphokinase": 4020,
+            "diabetes": 1,
+            "ejection_fraction": 32,
+            "high_blood_pressure": 1,
+            "platelets": 234558.23,
+            "serum_creatinine": 1.4,
+            "serum_sodium": 125,
+            "sex": 1,
+            "smoking": 0,
+            "time": 12
+          },
+          {
+            "age": 65.0,
+            "anaemia": 0,
+            "creatinine_phosphokinase": 4221,
+            "diabetes": 0,
+            "ejection_fraction": 22,
+            "high_blood_pressure": 0,
+            "platelets": 404567.23,
+            "serum_creatinine": 1.1,
+            "serum_sodium": 115,
+            "sex": 0,
+            "smoking": 1,
+            "time": 7
+          },
+      ]
+    }
+# Convert to JSON string
+input_data = json.dumps(data)
+with open("data.json", "w") as _f:
+    _f.write(input_data)
+
+# Set the content type
+headers = {"Content-Type": "application/json"}
+# If authentication is enabled, set the authorization header
+
+# Make the request and display the response
+resp = requests.post(scoring_uri, input_data, headers=headers)
+print(resp.json())
+```
+an the result of this is
+
+```python
+Scoring URL: http://ed926a23-aca1-4a20-980a-71f05596ce2b.southcentralus.azurecontainer.io/score
+{"result": [1, 1]}
+```
+
+So we can prove that this model has been successfully published. 
+Otherwise it would not be possible to address it and we would receive an error message.
 
 ## Save the best model in ONNX
 
@@ -154,9 +279,11 @@ OnnxConverter.save_onnx_model(automl_fitted_model_onnx, './outputs/AutoML.onnx' 
 So that the calculations can be understood by other systems. The best result is stored in the onnx format. 
 With the ONNX, AI developers can exchange models between different tools and choose the best combination of these tools for them.
 
-
 ## Screen Recording
 See on [youtube](https://youtu.be/w7i0fTQ_AeU)
 
 ## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+- We can using a higher runtime
+- Use larger datasets for transecting
+- Over the ONNX File bring thos Model on other EDGE devices
+- Bring more robustness into the code to be able to react better to missing data or when releases are delayed in Azure.
